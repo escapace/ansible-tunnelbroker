@@ -1,0 +1,32 @@
+---
+
+- name: check for variables
+  when: >
+    (vars[item] is not defined) or
+    ( vars[item] is defined and not vars[item] ) or
+    ( vars[item] is defined and vars[item]|length == 0 )
+  with_items: "{{ tunnelbroker_required }}"
+  fail:
+    msg: >
+      Required variables not defined or empty.
+
+- name: create tunnelbroker service
+  template:
+    src: templates/tunnelbroker.service.j2
+    dest: /etc/systemd/system/tunnelbroker.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: tunnelbroker interface configuration
+  template:
+    src: templates/ifcfg-sit1.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ tunnelbroker_interface }}
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - tunnelbroker restart
+
+- name: enable tunnelbroker on boot
+  service: name=tunnelbroker enabled=yes
