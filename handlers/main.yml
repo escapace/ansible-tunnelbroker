@@ -2,4 +2,4 @@
 
 - name: tunnelbroker restart
   service: name=tunnelbroker state=restarted
-  ignore_errors: tunnelbroker_role_debug
+  when: (tunnelbroker_role_debug|bool == false)
