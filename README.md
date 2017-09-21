@@ -1,16 +1,3 @@
-<p align="right">
-    <a href="https://travis-ci.org/epiloque/ansible-tunnelbroker">
-        <img src="https://travis-ci.org/epiloque/ansible-tunnelbroker.svg?branch=master"
-             alt="build status">
-    </a>
-        <a href="https://galaxy.ansible.com/epiloque/tunnelbroker">
-        <img src="https://img.shields.io/badge/ansible--galaxy-tunnelbroker-blue.svg"
-             alt="ansible galaxy">
-    </a>
-</p>
-
-tunnelbroker role
-
 ## Role Variables
 
 Available variables are listed below, along with default values:
@@ -37,7 +24,3 @@ tunnelbroker_server_ipv6:
   roles:
     - epiloque.tunnelbroker
 ```
-
-## License
-
-BSD
