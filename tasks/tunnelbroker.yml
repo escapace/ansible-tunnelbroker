@@ -30,4 +30,3 @@
 
 - name: enable tunnelbroker on boot
   service: name=tunnelbroker enabled=yes
-  # ignore_errors: True
