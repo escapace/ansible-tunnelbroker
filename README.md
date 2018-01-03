@@ -22,5 +22,5 @@ tunnelbroker_server_ipv6:
 ```yaml
 - hosts: servers
   roles:
-    - epiloque.tunnelbroker
+    - escapace.tunnelbroker
 ```

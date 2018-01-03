@@ -16,4 +16,4 @@
     # server IPv6 without the mask
     tunnelbroker_server_ipv6: 2001:470:1f12:852::1
   roles:
-  - role: epiloque.tunnelbroker
+  - role: escapace.tunnelbroker
