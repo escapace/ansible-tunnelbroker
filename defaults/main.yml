@@ -16,3 +16,5 @@ tunnelbroker_required:
   - tunnelbroker_client_ipv6
   - tunnelbroker_server_ipv4
   - tunnelbroker_server_ipv6
+
+tunnelbroker_role_debug: false
