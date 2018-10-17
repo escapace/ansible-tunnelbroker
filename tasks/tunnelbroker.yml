@@ -18,6 +18,14 @@
     group: root
     mode: 0644
 
+- name: ensure network-scripts directory exists
+  file:
+    path: /etc/sysconfig/network-scripts
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
 - name: tunnelbroker interface configuration
   template:
     src: templates/ifcfg-sit1.j2
