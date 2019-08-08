@@ -2,9 +2,9 @@
   hosts: localhost
   roles:
     - role: provision_docker
-      provision_docker_inventory_group: "{{ groups['test-images'] }}"
+      provision_docker_inventory_group: "{{ groups['test'] }}"
 
-- hosts: test-images
+- hosts: test
   vars:
     tunnelbroker_role_debug: true
     tunnelbroker_interface: sit1
