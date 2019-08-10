@@ -10,14 +10,6 @@
     msg: >
       Required variables not defined or empty.
 
-- name: create tunnelbroker service
-  template:
-    src: templates/tunnelbroker.service.j2
-    dest: /etc/systemd/system/tunnelbroker.service
-    owner: root
-    group: root
-    mode: 0644
-
 - name: ensure network-scripts directory exists
   file:
     path: /etc/sysconfig/network-scripts
@@ -28,13 +20,23 @@
 
 - name: tunnelbroker interface configuration
   template:
-    src: templates/ifcfg-sit1.j2
+    src: templates/ifcfg.j2
     dest: /etc/sysconfig/network-scripts/ifcfg-{{ tunnelbroker_interface }}
     owner: root
     group: root
     mode: 0644
-  notify:
-    - tunnelbroker restart
+  register: tunnelbroker_configuration_a
 
-- name: enable tunnelbroker on boot
-  service: name=tunnelbroker enabled=yes
+- name: tunnelbroker interface configuration
+  lineinfile:
+    path: /etc/sysconfig/network
+    regexp: "^IPV6_DEFAULTDEV="
+    line: "IPV6_DEFAULTDEV={{ tunnelbroker_interface }}"
+    owner: root
+    group: root
+    mode: 0644
+  register: tunnelbroker_configuration_b
+
+- name: tunnelbroker restart
+  command: bash -c "ifdown {{ tunnelbroker_interface }} && ifup {{ tunnelbroker_interface }}"
+  when: (tunnelbroker_role_debug|bool == false) and (tunnelbroker_configuration_a.changed or tunnelbroker_configuration_b.changed)

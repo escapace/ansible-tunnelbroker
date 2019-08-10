@@ -1,5 +1,0 @@
----
-
-- name: tunnelbroker restart
-  service: name=tunnelbroker state=restarted
-  when: (tunnelbroker_role_debug|bool == false)
