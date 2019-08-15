@@ -32,6 +32,7 @@
     path: /etc/sysconfig/network
     regexp: "^IPV6_DEFAULTDEV="
     line: "IPV6_DEFAULTDEV={{ tunnelbroker_interface }}"
+    create: yes
     owner: root
     group: root
     mode: 0644
