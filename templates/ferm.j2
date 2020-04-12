@@ -1,0 +1,6 @@
+domain ip table filter {
+    chain INPUT {
+        proto icmp icmp-type echo-request mod limit limit 900/min saddr ($TUNNELBROKER_SERVER_V4_CIDR 66.220.2.74) ACCEPT;
+        proto 41 saddr $TUNNELBROKER_SERVER_V4_CIDR ACCEPT;
+    }
+}

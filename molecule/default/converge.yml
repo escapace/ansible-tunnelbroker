@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    tunnelbroker_client_ipv6_cidr: 2001:470:1:122::2/64
+    tunnelbroker_server_ipv4: 216.66.22.2
+    tunnelbroker_server_ipv6: 2001:470:1:122::1
+    tunnelbroker_role_debug: true
+    ferm_role_debug: true
+  roles:
+    - role: escapace.tunnelbroker

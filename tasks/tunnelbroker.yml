@@ -25,9 +25,8 @@
     owner: root
     group: root
     mode: 0644
-  register: tunnelbroker_configuration_a
 
-- name: tunnelbroker interface configuration
+- name: tunnelbroker sysconfig configuration
   lineinfile:
     path: /etc/sysconfig/network
     regexp: "^IPV6_DEFAULTDEV="
@@ -36,8 +35,41 @@
     owner: root
     group: root
     mode: 0644
-  register: tunnelbroker_configuration_b
+  when: tunnelbroker_defaultgw
 
-- name: tunnelbroker restart
-  command: bash -c "ifdown {{ tunnelbroker_interface }} && ifup {{ tunnelbroker_interface }}"
-  when: (tunnelbroker_role_debug|bool == false) and (tunnelbroker_configuration_a.changed or tunnelbroker_configuration_b.changed)
+- name: tunnelbroker sysconfig configuration
+  lineinfile:
+    path: /etc/sysconfig/network
+    regexp: "^IPV6_DEFAULTDEV="
+    state: absent
+    create: yes
+    owner: root
+    group: root
+    mode: 0644
+  when: not tunnelbroker_defaultgw
+
+- name: tunnelbroker service configuration
+  template:
+    src: templates/tunnelbroker.service
+    dest: /etc/systemd/system/tunnelbroker.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - tunnelbroker reload
+    - tunnelbroker restart
+
+- name: tunnelbroker ferm variables
+  template: src=templates/ferm-vars.j2 dest=/etc/ferm/vars.d/1000-tunnelbroker.conf owner=root group=root mode=0600
+  notify:
+    - ferm restart
+
+- name: tunnelbroker ferm configuration
+  template: src=templates/ferm.j2 dest=/etc/ferm/ferm.d/1000-tunnelbroker.conf owner=root group=root mode=0600
+  notify:
+    - ferm restart
+
+- name: tunnelbroker enabled
+  systemd:
+    name: tunnelbroker
+    enabled: yes

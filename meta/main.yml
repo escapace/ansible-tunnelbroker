@@ -1,14 +1,20 @@
+---
+
 galaxy_info:
+  author: Escapace
   description: tunnelbroker role
   issue_tracker_url: https://github.com/escapace/ansible-tunnelbroker/issues
   license: Apache-2.0
-  min_ansible_version: 2.4
+  min_ansible_version: 2.9
   github_branch: master
   platforms:
   - name: EL
     versions:
-    - 7
+    - 8
 
   galaxy_tags:
   - escapace
   - tunnelbroker
+
+dependencies:
+   - { role: escapace.ferm }

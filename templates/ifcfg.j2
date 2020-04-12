@@ -1,10 +1,11 @@
 DEVICE={{ tunnelbroker_interface }}
+NM_CONTROLLED=no
 TYPE=sit
 BOOTPROTO=none
 ONBOOT=yes
 IPV6INIT=yes
 IPV6TUNNELIPV4={{ tunnelbroker_server_ipv4 }}
-IPV6ADDR={{ tunnelbroker_client_ipv6 }}
+IPV6ADDR={{ tunnelbroker_client_ipv6_cidr }}
 {%if tunnelbroker_defaultgw == true %}
 IPV6_DEFAULTGW={{ tunnelbroker_server_ipv6 }}
 {% endif %}

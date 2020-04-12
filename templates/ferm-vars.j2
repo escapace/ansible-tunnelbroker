@@ -1,0 +1,5 @@
+@def $TUNNELBROKER_CLIENT_DEV = {{ tunnelbroker_interface }};
+@def $TUNNELBROKER_CLIENT_V6_CIDR={{ tunnelbroker_client_ipv6_cidr }};
+
+@def $TUNNELBROKER_SERVER_V6_CIDR={{ tunnelbroker_server_ipv6 | trim }}/64;
+@def $TUNNELBROKER_SERVER_V4_CIDR={{ tunnelbroker_server_ipv4 | trim }}/32;

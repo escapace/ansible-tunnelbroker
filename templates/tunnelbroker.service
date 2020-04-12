@@ -1,0 +1,13 @@
+[Unit]
+Description=Hurricane Electric’s IPv6 tunnel broker
+After=network.target
+Before=ferm.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=sh -c "/sbin/ip tunnel add {{ tunnelbroker_interface }} mode sit remote {{ tunnelbroker_server_ipv4 }} ttl 255 && /sbin/ip link set {{ tunnelbroker_interface }} up && /sbin/ip addr add {{ tunnelbroker_client_ipv6_cidr }} dev {{ tunnelbroker_interface }}{% if tunnelbroker_defaultgw %} && /sbin/ip route add ::/0 via {{ tunnelbroker_server_ipv6 }} dev {{ tunnelbroker_interface }}{% endif %}"
+ExecStop=sh -c "/sbin/ip link set {{ tunnelbroker_interface }} down && /sbin/ip tunnel del {{ tunnelbroker_interface }}"
+
+[Install]
+WantedBy=multi-user.target
