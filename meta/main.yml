@@ -2,7 +2,7 @@
 
 galaxy_info:
   role_name: tunnelbroker
-  author: Escapace
+  author: escapace
   description: tunnelbroker role
   issue_tracker_url: https://github.com/escapace/ansible-tunnelbroker/issues
   license: Apache-2.0
