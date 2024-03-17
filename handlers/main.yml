@@ -1,12 +1,11 @@
 ---
-
 - name: tunnelbroker reload
-  systemd:
-    daemon_reload: yes
+  ansible.builtin.systemd:
+    daemon_reload: true
 
 - name: tunnelbroker restart
-  systemd:
+  ansible.builtin.systemd:
     name: tunnelbroker
     state: restarted
-    enabled: yes
+    enabled: true
   when: not tunnelbroker_role_debug|bool

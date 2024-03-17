@@ -1,75 +1,84 @@
 ---
-
 - name: check for variables
   when: >
     (vars[item] is not defined) or
     ( vars[item] is defined and not vars[item] ) or
     ( vars[item] is defined and vars[item]|length == 0 )
   with_items: "{{ tunnelbroker_required }}"
-  fail:
+  ansible.builtin.fail:
     msg: >
       Required variables not defined or empty.
 
 - name: ensure network-scripts directory exists
-  file:
+  ansible.builtin.file:
     path: /etc/sysconfig/network-scripts
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
 - name: tunnelbroker interface configuration
-  template:
+  ansible.builtin.template:
     src: templates/ifcfg.j2
     dest: /etc/sysconfig/network-scripts/ifcfg-{{ tunnelbroker_interface }}
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
 
 - name: tunnelbroker sysconfig configuration
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/sysconfig/network
-    regexp: "^IPV6_DEFAULTDEV="
-    line: "IPV6_DEFAULTDEV={{ tunnelbroker_interface }}"
-    create: yes
+    regexp: ^IPV6_DEFAULTDEV=
+    line: IPV6_DEFAULTDEV={{ tunnelbroker_interface }}
+    create: true
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   when: tunnelbroker_defaultgw
 
 - name: tunnelbroker sysconfig configuration
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/sysconfig/network
-    regexp: "^IPV6_DEFAULTDEV="
+    regexp: ^IPV6_DEFAULTDEV=
     state: absent
-    create: yes
+    create: true
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   when: not tunnelbroker_defaultgw
 
 - name: tunnelbroker service configuration
-  template:
+  ansible.builtin.template:
     src: templates/tunnelbroker.service
     dest: /etc/systemd/system/tunnelbroker.service
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   notify:
     - tunnelbroker reload
     - tunnelbroker restart
 
 - name: tunnelbroker ferm variables
-  template: src=templates/ferm-vars.j2 dest=/etc/ferm/vars.d/1000-tunnelbroker.conf owner=root group=root mode=0600
+  ansible.builtin.template:
+    src: templates/ferm-vars.j2
+    dest: /etc/ferm/vars.d/1000-tunnelbroker.conf
+    owner: root
+    group: root
+    mode: "0600"
   notify:
     - ferm restart
 
 - name: tunnelbroker ferm configuration
-  template: src=templates/ferm.j2 dest=/etc/ferm/ferm.d/1000-tunnelbroker.conf owner=root group=root mode=0600
+  ansible.builtin.template:
+    src: templates/ferm.j2
+    dest: /etc/ferm/ferm.d/1000-tunnelbroker.conf
+    owner: root
+    group: root
+    mode: "0600"
   notify:
     - ferm restart
 
 - name: tunnelbroker enabled
-  systemd:
+  ansible.builtin.systemd:
     name: tunnelbroker
-    enabled: yes
+    enabled: true
